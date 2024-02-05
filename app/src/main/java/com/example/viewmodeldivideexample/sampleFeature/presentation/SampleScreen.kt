@@ -11,20 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.AppViewModel
-import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.FirstViewModel
-import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.SecondViewModel
-import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.ThirdViewModel
+import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.AppViewModelImpl
+import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.FirstViewModelImpl
+import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.SecondViewModelImpl
+import com.example.viewmodeldivideexample.sampleFeature.presentation.devided.ThirdViewModelImpl
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SampleScreen() {
 
-//    val viewModel: SampleViewModel = hiltViewModel()
-    val firstViewModel: FirstViewModel = hiltViewModel()
-    val secondViewModel: SecondViewModel = hiltViewModel()
-    val thirdViewModel: ThirdViewModel = hiltViewModel()
+    val firstViewModel: FirstViewModelImpl = hiltViewModel()
+    val secondViewModel: SecondViewModelImpl = hiltViewModel()
+    val thirdViewModel: ThirdViewModelImpl = hiltViewModel()
 
     val screenState = firstViewModel.collectAsState()
 
@@ -32,13 +31,13 @@ fun SampleScreen() {
 
     firstViewModel.collectSideEffect { sideEffect ->
         when(sideEffect) {
-            AppViewModel.SideEffect.Notify1ButtonClicked -> {
+            AppViewModelImpl.SideEffect.Notify1ButtonClicked -> {
                 Toast.makeText(context, "btn 1 clicked", Toast.LENGTH_SHORT).show()
             }
-            AppViewModel.SideEffect.Notify2ButtonClicked -> {
+            AppViewModelImpl.SideEffect.Notify2ButtonClicked -> {
                 Toast.makeText(context, "btn 2 clicked", Toast.LENGTH_SHORT).show()
             }
-            AppViewModel.SideEffect.Notify3ButtonClicked -> {
+            AppViewModelImpl.SideEffect.Notify3ButtonClicked -> {
                 Toast.makeText(context, "btn 3 clicked", Toast.LENGTH_SHORT).show()
             }
         }
@@ -50,7 +49,7 @@ fun SampleScreen() {
         ) {
             Row {
                 Button(onClick = {
-                    firstViewModel.sendAction(AppViewModel.Action.Button1Clicked)
+                    firstViewModel.sendAction(AppViewModelImpl.Action.Button1Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
@@ -58,7 +57,7 @@ fun SampleScreen() {
             }
             Row {
                 Button(onClick = {
-                    secondViewModel.sendAction(AppViewModel.Action.Button2Clicked)
+                    secondViewModel.sendAction(AppViewModelImpl.Action.Button2Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
@@ -66,11 +65,19 @@ fun SampleScreen() {
             }
             Row {
                 Button(onClick = {
-                    thirdViewModel.sendAction(AppViewModel.Action.Button3Clicked)
+                    thirdViewModel.sendAction(AppViewModelImpl.Action.Button3Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
                 Text(text = screenState.value.text3)
+            }
+            Row {
+                Button(onClick = {
+                    thirdViewModel.sendAction(AppViewModelImpl.Action.IntButtonClicked)
+                }) {
+                    Text(text = "click to get int")
+                }
+                Text(text = screenState.value.intValue)
             }
         }
     }
