@@ -1,11 +1,20 @@
 package com.example.viewmodeldivideexample.sampleFeature.presentation.devided
 
-import org.orbitmvi.orbit.ContainerHost
+abstract class AppViewModel{
 
-interface AppViewModel{
-    fun doIntent(work: suspend () -> Unit)
-    fun doReduce(invoke: (state: AppViewModelImpl.State) -> AppViewModelImpl.State)
-    fun doPostSideEffect(sideEffect: AppViewModelImpl.SideEffect)
+    private var parent: AppViewModelImpl? = null
 
-    fun init(parent: AppViewModel)
+    fun doIntent(work: suspend () -> Unit) {
+        parent?.doIntent(work)
+    }
+    fun doReduce(invoke: (state: AppViewModelImpl.State) -> AppViewModelImpl.State) {
+        parent?.doReduce(invoke)
+    }
+    fun doPostSideEffect(sideEffect: AppViewModelImpl.SideEffect) {
+        parent?.doPostSideEffect(sideEffect)
+    }
+
+    open fun init(parent: AppViewModelImpl) {
+        this.parent = parent
+    }
 }

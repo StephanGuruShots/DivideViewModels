@@ -10,12 +10,10 @@ import javax.inject.Inject
 
 class ThirdViewModelImpl @Inject constructor(
     private val sharedUseCases: SharedUseCases
-) : AppViewModel {
+) : AppViewModel() {
 
-    private lateinit var parent: AppViewModel
-
-    override fun init(parent: AppViewModel) {
-        this.parent = parent
+    override fun init(parent: AppViewModelImpl) {
+        super.init(parent)
     }
 
     fun sendAction(action: AppViewModelImpl.Action) {
@@ -47,17 +45,5 @@ class ThirdViewModelImpl @Inject constructor(
 
             }
         }
-    }
-
-    override fun doIntent(work: suspend () -> Unit) {
-        parent.doIntent(work)
-    }
-
-    override fun doReduce(invoke: (state: AppViewModelImpl.State) -> AppViewModelImpl.State) {
-        parent.doReduce(invoke)
-    }
-
-    override fun doPostSideEffect(sideEffect: AppViewModelImpl.SideEffect) {
-        parent.doPostSideEffect(sideEffect)
     }
 }

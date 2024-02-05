@@ -17,7 +17,7 @@ class AppViewModelImpl @Inject constructor (
     val secondViewModel: SecondViewModelImpl,
     val thirdViewModel: ThirdViewModelImpl
 ) : ViewModel(),
-    ContainerHost<AppViewModelImpl.State, AppViewModelImpl.SideEffect>, AppViewModel {
+    ContainerHost<AppViewModelImpl.State, AppViewModelImpl.SideEffect> {
 
     override val container: Container<State, SideEffect> = container(State())
 
@@ -27,13 +27,13 @@ class AppViewModelImpl @Inject constructor (
         thirdViewModel.init(this)
     }
 
-    override fun doIntent(work: suspend () -> Unit) {
+    fun doIntent(work: suspend () -> Unit) {
         intent {
             work()
         }
     }
 
-    override fun doReduce(invoke: (state: State) -> State) {
+    fun doReduce(invoke: (state: State) -> State) {
         intent {
             reduce {
                 invoke(state)
@@ -41,14 +41,10 @@ class AppViewModelImpl @Inject constructor (
         }
     }
 
-    override fun doPostSideEffect(sideEffect: SideEffect) {
+    fun doPostSideEffect(sideEffect: SideEffect) {
         intent {
             postSideEffect(sideEffect)
         }
-    }
-
-    override fun init(parent: AppViewModel) {
-//        aaaaa
     }
 
     data class State(
