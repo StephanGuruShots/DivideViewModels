@@ -15,13 +15,7 @@ class ThirdViewModelImpl @Inject constructor(
 ) : AppViewModel by appViewModel, ViewModel() {
 
     init {
-        doIntent {
-            sharedUseCases.intSharedFlow.collect {
-                doReduce { state ->
-                    state.copy(text3 = it.toString())
-                }
-            }
-        }
+
     }
 
     fun sendAction(action: AppViewModelImpl.Action) {

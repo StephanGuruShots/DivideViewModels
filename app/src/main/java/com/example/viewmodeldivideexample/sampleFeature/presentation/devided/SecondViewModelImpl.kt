@@ -22,6 +22,14 @@ class SecondViewModelImpl @Inject constructor(
                 }
             }
         }
+
+        doIntent {
+            sharedUseCases.intSharedFlow.collect {
+                doReduce { state ->
+                    state.copy(text3 = it.toString())
+                }
+            }
+        }
     }
 
     fun sendAction(action: AppViewModelImpl.Action) {
