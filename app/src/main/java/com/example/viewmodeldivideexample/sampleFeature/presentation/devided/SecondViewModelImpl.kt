@@ -6,13 +6,15 @@ import com.example.viewmodeldivideexample.sampleFeature.domain.StringUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
 class SecondViewModelImpl @Inject constructor(
-    private val appViewModel: AppViewModel,
     private val sharedUseCases: SharedUseCases
-) : AppViewModel by appViewModel, ViewModel() {
+) : AppViewModel {
 
-    init {
+    private lateinit var parent: AppViewModel
+
+    override fun init(parent: AppViewModel) {
+        this.parent = parent
+
         Log.d("rawr", "shared uc 1vm = ${sharedUseCases}")
         doIntent {
             sharedUseCases.stringSharedFlow.collect {
@@ -47,5 +49,17 @@ class SecondViewModelImpl @Inject constructor(
 
             else -> {}
         }
+    }
+
+    override fun doIntent(work: suspend () -> Unit) {
+        parent.doIntent(work)
+    }
+
+    override fun doReduce(invoke: (state: AppViewModelImpl.State) -> AppViewModelImpl.State) {
+        parent.doReduce(invoke)
+    }
+
+    override fun doPostSideEffect(sideEffect: AppViewModelImpl.SideEffect) {
+        parent.doPostSideEffect(sideEffect)
     }
 }

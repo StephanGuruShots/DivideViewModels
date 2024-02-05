@@ -21,11 +21,11 @@ object SampleModule {
         return StringUseCase()
     }
 
-    @Singleton
-    @Provides
-    fun provideAppViewModel(): AppViewModel {
-        return AppViewModelImpl()
-    }
+//    @Singleton
+//    @Provides
+//    fun provideAppViewModel(): AppViewModel {
+//        return AppViewModelImpl()
+//    }
 
     @Singleton
     @Provides

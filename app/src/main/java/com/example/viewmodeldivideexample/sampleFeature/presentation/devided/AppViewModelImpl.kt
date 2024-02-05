@@ -2,17 +2,30 @@ package com.example.viewmodeldivideexample.sampleFeature.presentation.devided
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
-class AppViewModelImpl() : ViewModel(),
+@HiltViewModel
+class AppViewModelImpl @Inject constructor (
+    val firstViewModel: FirstViewModelImpl,
+    val secondViewModel: SecondViewModelImpl,
+    val thirdViewModel: ThirdViewModelImpl
+) : ViewModel(),
     ContainerHost<AppViewModelImpl.State, AppViewModelImpl.SideEffect>, AppViewModel {
 
     override val container: Container<State, SideEffect> = container(State())
+
+    init {
+        firstViewModel.init(this)
+        secondViewModel.init(this)
+        thirdViewModel.init(this)
+    }
 
     override fun doIntent(work: suspend () -> Unit) {
         intent {
@@ -32,6 +45,10 @@ class AppViewModelImpl() : ViewModel(),
         intent {
             postSideEffect(sideEffect)
         }
+    }
+
+    override fun init(parent: AppViewModel) {
+//        aaaaa
     }
 
     data class State(

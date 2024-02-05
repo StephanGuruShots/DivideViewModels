@@ -21,15 +21,13 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun SampleScreen() {
 
-    val firstViewModel: FirstViewModelImpl = hiltViewModel()
-    val secondViewModel: SecondViewModelImpl = hiltViewModel()
-    val thirdViewModel: ThirdViewModelImpl = hiltViewModel()
+    val appViewModel: AppViewModelImpl = hiltViewModel()
 
-    val screenState = firstViewModel.collectAsState()
+    val screenState = appViewModel.collectAsState()
 
     val context = LocalContext.current
 
-    firstViewModel.collectSideEffect { sideEffect ->
+    appViewModel.collectSideEffect { sideEffect ->
         when(sideEffect) {
             AppViewModelImpl.SideEffect.Notify1ButtonClicked -> {
                 Toast.makeText(context, "btn 1 clicked", Toast.LENGTH_SHORT).show()
@@ -49,7 +47,7 @@ fun SampleScreen() {
         ) {
             Row {
                 Button(onClick = {
-                    firstViewModel.sendAction(AppViewModelImpl.Action.Button1Clicked)
+                    appViewModel.firstViewModel.sendAction(AppViewModelImpl.Action.Button1Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
@@ -57,7 +55,7 @@ fun SampleScreen() {
             }
             Row {
                 Button(onClick = {
-                    secondViewModel.sendAction(AppViewModelImpl.Action.Button2Clicked)
+                    appViewModel.secondViewModel.sendAction(AppViewModelImpl.Action.Button2Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
@@ -65,7 +63,7 @@ fun SampleScreen() {
             }
             Row {
                 Button(onClick = {
-                    thirdViewModel.sendAction(AppViewModelImpl.Action.Button3Clicked)
+                    appViewModel.thirdViewModel.sendAction(AppViewModelImpl.Action.Button3Clicked)
                 }) {
                     Text(text = screenState.value.buttonText)
                 }
@@ -73,7 +71,7 @@ fun SampleScreen() {
             }
             Row {
                 Button(onClick = {
-                    thirdViewModel.sendAction(AppViewModelImpl.Action.IntButtonClicked)
+                    appViewModel.thirdViewModel.sendAction(AppViewModelImpl.Action.IntButtonClicked)
                 }) {
                     Text(text = "click to get int")
                 }

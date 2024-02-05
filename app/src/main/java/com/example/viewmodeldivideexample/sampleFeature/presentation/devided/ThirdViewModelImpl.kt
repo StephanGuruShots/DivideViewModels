@@ -8,14 +8,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
-@HiltViewModel
 class ThirdViewModelImpl @Inject constructor(
-    private val appViewModel: AppViewModel,
     private val sharedUseCases: SharedUseCases
-) : AppViewModel by appViewModel, ViewModel() {
+) : AppViewModel {
 
-    init {
+    private lateinit var parent: AppViewModel
 
+    override fun init(parent: AppViewModel) {
+        this.parent = parent
     }
 
     fun sendAction(action: AppViewModelImpl.Action) {
@@ -47,5 +47,17 @@ class ThirdViewModelImpl @Inject constructor(
 
             }
         }
+    }
+
+    override fun doIntent(work: suspend () -> Unit) {
+        parent.doIntent(work)
+    }
+
+    override fun doReduce(invoke: (state: AppViewModelImpl.State) -> AppViewModelImpl.State) {
+        parent.doReduce(invoke)
+    }
+
+    override fun doPostSideEffect(sideEffect: AppViewModelImpl.SideEffect) {
+        parent.doPostSideEffect(sideEffect)
     }
 }
